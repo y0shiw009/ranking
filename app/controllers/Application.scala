@@ -28,7 +28,6 @@ object Application extends Controller {
         val value = result.getColumnLatest(Bytes.toBytes("data"), Bytes.toBytes("cid=gf~evt=g1"))
         val m = Map("asid" -> asid, "evt" -> Bytes.toString(value.getValue()))
         table.close
-        connection.close
         toJsonResult(Ok(Json.toJson(m)))
     }
 
@@ -38,7 +37,6 @@ object Application extends Controller {
         val value = result.getColumnLatest(Bytes.toBytes("data"), Bytes.toBytes("cid=gf~evt=g1"))
         val m = Map("asid" -> asid, "evt" -> Bytes.toString(value.getValue()))
         table.close
-        connection.close
         toJsonResult(Ok(Json.toJson(m)))
     }
 
