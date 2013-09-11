@@ -45,12 +45,29 @@ object Application extends Controller {
             "Content-Type" -> "application/json; charset=utf-8")
     }
 
-    def init(cid: String, evt: String) = Action {
+    /**
+     * 0～200000のasIdを投入する
+     */
+    def init(cid: String, evt: String, num: String) = Action {
         val table: HTableInterface = connection.getTable("ranking");
-        val p = new Put(Bytes.toBytes("asid-2"));
-        p.add(Bytes.toBytes("data"), Bytes.toBytes(s"cid=${cid}~evt=${evt}"), Bytes.toBytes(0));
-        table.put(p);
+        for (i <- 0 to num.toInt) {
+            val p = new Put(Bytes.toBytes("%040d".format(i)));
+            p.add(Bytes.toBytes("data"), Bytes.toBytes(s"cid=${cid}~evt=${evt}"), Bytes.toBytes(0.toString));
+            table.put(p);
+        }
         table.close
         Ok("create data")
+    }
+
+    /**
+     * 0～200000までのランダムの数字を返す。
+     * 左パディング、40桁にする
+     */
+    private def rndAsid: String = {
+        //"00383a88ede3e64034ea10e25f7e57ad868f146e"
+        val a = scala.math.random
+        val d = scala.math.floor(a * 1000000 / 5)
+        "%040d".format(d.toInt)
+        ""
     }
 }
