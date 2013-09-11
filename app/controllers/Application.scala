@@ -22,6 +22,16 @@ object Application extends Controller {
 
     val connection = HConnectionManager.createConnection(conf);
 
+    def rndget(cid: String, evt: String) = Action {
+        val table: HTableInterface = connection.getTable("ranking");
+        val rnd = rndAsid
+        val result = table.get(new Get(Bytes.toBytes(rnd)))
+        val value = result.getColumnLatest(Bytes.toBytes("data"), Bytes.toBytes(s"cid=${cid}~evt=${evt}"))
+        val m = Map("asid" -> rnd, "evt" -> Bytes.toString(value.getValue()))
+        table.close
+        toJsonResult(Ok(Json.toJson(m)))
+    }
+
     def get(asid: String, evt: String) = Action {
         val table: HTableInterface = connection.getTable("ranking");
         val result = table.get(new Get(Bytes.toBytes(asid)))

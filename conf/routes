@@ -6,6 +6,7 @@
 GET     /assets/*file               controllers.Assets.at(path="/public", file)
 
 
+GET    /r/rndget/:cid/:evt       controllers.Application.rndget(cid, evt)
 GET    /r/get/:asid/:evt         controllers.Application.get(asid, evt)
 GET    /r/inc/:asid/:evt/:pnt    controllers.Application.inc(asid, evt, pnt)
 GET    /r/init/:cid/:evt/:num    controllers.Application.init(cid, evt, num)
