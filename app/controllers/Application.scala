@@ -48,7 +48,7 @@ object Application extends Controller {
     def init(cid: String, evt: String) = Action {
         val table: HTableInterface = connection.getTable("ranking");
         val p = new Put(Bytes.toBytes("asid-2"));
-        p.add(Bytes.toBytes("data"), Bytes.toBytes("cid=gf~evt=g1"), Bytes.toBytes(0));
+        p.add(Bytes.toBytes("data"), Bytes.toBytes(s"cid=${cid}~evt=${evt}"), Bytes.toBytes(0));
         table.put(p);
         table.close
         Ok("create data")

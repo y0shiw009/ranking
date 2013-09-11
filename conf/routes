@@ -8,4 +8,4 @@ GET     /assets/*file               controllers.Assets.at(path="/public", file)
 
 GET    /r/get/:asid/:evt         controllers.Application.get(asid, evt)
 GET    /r/inc/:asid/:evt/:pnt    controllers.Application.inc(asid, evt, pnt)
-POST   /r/init/:cid/:evt         controllers.Application.init(cid, evt)
+GET    /r/init/:cid/:evt         controllers.Application.init(cid, evt)
