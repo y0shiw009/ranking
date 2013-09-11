@@ -8,7 +8,8 @@ object ApplicationBuild extends Build {
     val appVersion = "1.0-SNAPSHOT"
 
     val appDependencies = Seq(
-        "org.apache.hbase" % "hbase" % "0.94.11",
+        "org.apache.hbase" % "hbase" % "0.94.11" excludeAll (
+            ExclusionRule(organization = "org.slf4j")),
         "org.apache.hadoop" % "hadoop-core" % "1.0.4",
         jdbc,
         anorm)
