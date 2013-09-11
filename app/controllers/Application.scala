@@ -26,14 +26,20 @@ object Application extends Controller {
         val table: HTableInterface = connection.getTable("ranking");
         val result = table.get(new Get(Bytes.toBytes(asid)))
         val value = result.getColumnLatest(Bytes.toBytes("data"), Bytes.toBytes("cid=gf~evt=g1"))
-        toJsonResult(Ok(Json.toJson(Map("asid" -> asid, "evt" -> Bytes.toString(value.getValue())))))
+        val m = Map("asid" -> asid, "evt" -> Bytes.toString(value.getValue()))
+        table.close
+        connection.close
+        toJsonResult(Ok(Json.toJson(m)))
     }
 
     def inc(asid: String, evt: String, pnt: String) = Action {
         val table: HTableInterface = connection.getTable("ranking");
         val result = table.get(new Get(Bytes.toBytes(asid)))
         val value = result.getColumnLatest(Bytes.toBytes("data"), Bytes.toBytes("cid=gf~evt=g1"))
-        toJsonResult(Ok(Json.toJson(Map("asid" -> asid, "evt" -> Bytes.toString(value.getValue())))))
+        val m = Map("asid" -> asid, "evt" -> Bytes.toString(value.getValue()))
+        table.close
+        connection.close
+        toJsonResult(Ok(Json.toJson(m)))
     }
 
     private def toJsonResult(result: Result): Result = {
