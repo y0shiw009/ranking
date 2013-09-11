@@ -5,11 +5,11 @@ import org.apache.hadoop.hbase.client.Get
 import org.apache.hadoop.hbase.client.HConnectionManager
 import org.apache.hadoop.hbase.client.HTableInterface
 import org.apache.hadoop.hbase.util.Bytes
-
 import play.api.libs.json.Json
 import play.api.mvc.Action
 import play.api.mvc.Controller
 import play.api.mvc.Result
+import org.apache.hadoop.hbase.client.Put
 
 object Application extends Controller {
 
@@ -45,19 +45,12 @@ object Application extends Controller {
             "Content-Type" -> "application/json; charset=utf-8")
     }
 
-    def index = Action {
-        println("debug01")
-        val table: HTableInterface = connection.getTable("test");
-
-        println("debug02")
-        val result = table.get(new Get(Bytes.toBytes("row")))
-
-        println("debug03")
-        val value = result.getColumnLatest(Bytes.toBytes("family1"), Bytes.toBytes("qualifier"))
-
-        println(Bytes.toString(value.getValue()))
-        table.close();
-        Ok(views.html.index("Your new application is ready."))
+    def init(cid: String, evt: String) = Action {
+        val table: HTableInterface = connection.getTable("ranking");
+        val p = new Put(Bytes.toBytes("asid-2"));
+        p.add(Bytes.toBytes("data"), Bytes.toBytes("cid=gf~evt=g1"), Bytes.toBytes(0));
+        table.put(p);
+        table.close
+        Ok("create data")
     }
-
 }
