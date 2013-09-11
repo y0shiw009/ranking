@@ -15,7 +15,7 @@ object Application extends Controller {
 
     val conf = {
         val conf = HBaseConfiguration.create();
-        conf.set("hbase.zookeeper.quorum", "ec2-54-250-225-111.ap-northeast-1.compute.amazonaws.com");
+        conf.set("hbase.zookeeper.quorum", "ec2-54-250-230-72.ap-northeast-1.compute.amazonaws.com");
         conf.set("hbase.zookeeper.property.clientPort", "2181");
         conf
     }
