@@ -90,8 +90,8 @@ object Application extends Controller {
         ""
     }
 
-    def index = Action {
-        println("index is called")
+    def act = Action {
+        println("act is called")
         try {
             val sys = ActorSystem()
             val remoteActor = sys.actorFor(
