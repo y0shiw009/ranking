@@ -91,10 +91,16 @@ object Application extends Controller {
     }
 
     def index = Action {
-        val sys = ActorSystem()
-        val remoteActor = sys.actorFor(
-            "akka://RemoteActor@ec2-54-250-218-190.ap-northeast-1.compute.amazonaws.com:2552/user/serverActor")
-        remoteActor ! "Hello World"
+        println("index is called")
+        try {
+            val sys = ActorSystem()
+            val remoteActor = sys.actorFor(
+                "akka://RemoteActor@ec2-54-250-218-190.ap-northeast-1.compute.amazonaws.com:2552/user/serverActor")
+            remoteActor ! "Hello World"
+        }
+        catch {
+            case e: Exception => e.printStackTrace()
+        }
         Ok("index")
     }
 
@@ -104,6 +110,7 @@ object Application extends Controller {
         }
     }
 
+    println("RemoteActor rise!")
     val system = ActorSystem("RemoteActor")
     system.actorOf(Props[ServerActor], "serverActor")
 }
