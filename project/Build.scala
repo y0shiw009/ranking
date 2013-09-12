@@ -11,6 +11,7 @@ object ApplicationBuild extends Build {
         "org.apache.hbase" % "hbase" % "0.94.11" excludeAll (
             ExclusionRule(organization = "org.slf4j")),
         "org.apache.hadoop" % "hadoop-core" % "1.0.4",
+        "com.typesafe.akka" % "akka-remote" % "2.0.5",
         jdbc,
         anorm)
 

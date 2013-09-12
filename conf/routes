@@ -2,11 +2,13 @@
 # This file defines all application routes (Higher priority routes first)
 # ~~~~
 
+GET    /                            controllers.Application.index
+
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)
 
 
-GET    /r/rndget/:cid/:evt       controllers.Application.rndget(cid, evt)
-GET    /r/get/:asid/:evt         controllers.Application.get(asid, evt)
-GET    /r/inc/:asid/:evt/:pnt    controllers.Application.inc(asid, evt, pnt)
-GET    /r/init/:cid/:evt/:num    controllers.Application.init(cid, evt, num)
+GET    /r/rndget/:cid/:evt            controllers.Application.rndget(cid, evt)
+GET    /r/get/:asid/:evt              controllers.Application.get(asid, evt)
+GET    /r/inc/:asid/:cid/:evt/:pnt    controllers.Application.inc(asid, cid, evt, pnt)
+GET    /r/init/:cid/:evt/:num         controllers.Application.init(cid, evt, num)

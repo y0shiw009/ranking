@@ -10,6 +10,9 @@ import play.api.mvc.Action
 import play.api.mvc.Controller
 import play.api.mvc.Result
 import org.apache.hadoop.hbase.client.Put
+import akka.actor.Actor
+import akka.actor.ActorSystem
+import akka.actor.Props
 
 object Application extends Controller {
 
@@ -41,13 +44,19 @@ object Application extends Controller {
         toJsonResult(Ok(Json.toJson(m)))
     }
 
-    def inc(asid: String, evt: String, pnt: String) = Action {
+    def inc(asid: String, cid: String, evt: String, pnt: String) = Action {
+
         val table: HTableInterface = connection.getTable("ranking");
-        val result = table.get(new Get(Bytes.toBytes(asid)))
-        val value = result.getColumnLatest(Bytes.toBytes("data"), Bytes.toBytes("cid=gf~evt=g1"))
-        val m = Map("asid" -> asid, "evt" -> Bytes.toString(value.getValue()))
+        val row = Bytes.toBytes(asid)
+        val cf = Bytes.toBytes("data")
+        val qr = Bytes.toBytes(s"cid=${cid}~evt=${evt}")
+        val incVal = table.incrementColumnValue(row, cf, qr, pnt.toLong, true);
+
+        //val value = result.getColumnLatest(Bytes.toBytes("data"), Bytes.toBytes("cid=gf~evt=g1"))
+        //val m = Map("asid" -> asid, "evt" -> Bytes.toString(value.getValue()))
         table.close
-        toJsonResult(Ok(Json.toJson(m)))
+        //toJsonResult(Ok(Json.toJson(m)))
+        Ok("")
     }
 
     private def toJsonResult(result: Result): Result = {
@@ -80,4 +89,21 @@ object Application extends Controller {
         "%040d".format(d.toInt)
         ""
     }
+
+    def index = Action {
+        val sys = ActorSystem()
+        val remoteActor = sys.actorFor(
+            "akka://RemoteActor@ec2-54-250-218-190.ap-northeast-1.compute.amazonaws.com:2552/user/serverActor")
+        remoteActor ! "Hello World"
+        Ok("index")
+    }
+
+    class ServerActor extends Actor {
+        def receive = {
+            case x => println("execute remote actor: " + x)
+        }
+    }
+
+    val system = ActorSystem("RemoteActor")
+    system.actorOf(Props[ServerActor], "serverActor")
 }
